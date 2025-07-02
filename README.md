@@ -10,10 +10,10 @@ Minimum OpenSimulator version: 0.9.2
 May work with earlier versions of OpenSimulator, but this has not been tested.
 
 # Index
-[About](#about)
-[Configuration](#configuration)
-[Calling](#calling)
-[Sample Output](#sample_output)
+- [About](#about)
+- [Configuration](#configuration)
+- [Calling](#calling)
+- [Sample Output](#sample_output)
 
 ## About
 [Back to Top](#os-gridinfo)

@@ -3,8 +3,6 @@ Returns a JSON object of grid information for MySQL/MariaDB based OpenSimulator 
 
 **Version**: `1.0.2`
 ```
-1.0.0
-
 Minimum OpenSimulator version: 0.9.2
 ```
 **WARNING**: Requires backend access to the grid database!

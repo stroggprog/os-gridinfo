@@ -2,7 +2,7 @@
 header("Content-type:application/json");
 //header("Content-type:text/plain");
 
-define("SRC_VERSION", "1.0.0");
+define("SRC_VERSION", "1.0.2");
 
 include_once("lib/db_mysql.php");
 include_once("lib/params.php");
@@ -45,14 +45,13 @@ $db->execute("select count(*) as c from UserAccounts where active=1 and not (Fir
 $r = $db->as_obj();
 $result["users"] = (int) $r->c;
 
-$db->execute("select count(*) as c from Presence");
+$db->execute("select count(*) as c from Presence where RegionID!='00000000-0000-0000-0000-000000000000'");
 $r = $db->as_obj();
 $result["usersonline"] = $r->c - $result["godsonline"];
 
 $result["totalonline"] = $result["godsonline"] + $result["usersonline"];
 
-$t = time();
-$db->execute("select count(*) as c from GridUser WHERE `Login`>`Logout` and `HomeRegionID`='00000000-0000-0000-0000-000000000000'");
+$db->execute("select count(*) as c from GridUser WHERE `Login`>`Logout` and UserID not like '%;http'");
 $r = $db->as_obj();
 $result["grid"] = (int) $r->c;
 

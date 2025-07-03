@@ -1,7 +1,7 @@
 # os-gridinfo
 Returns a JSON object of grid information for MySQL/MariaDB based OpenSimulator instances
 
-**Version**: `1.0.3`
+**Version**: `1.0.4`
 ```
 Minimum OpenSimulator version: 0.9.2
 ```

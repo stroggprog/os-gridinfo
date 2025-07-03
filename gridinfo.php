@@ -2,7 +2,7 @@
 header("Content-type:application/json");
 //header("Content-type:text/plain");
 
-define("SRC_VERSION", "1.0.3");
+define("SRC_VERSION", "1.0.4");
 
 include_once("lib/db_mysql.php");
 include_once("lib/params.php");
@@ -51,7 +51,7 @@ $result["usersonline"] = $r->c - $result["godsonline"];
 
 $result["totalonline"] = $result["godsonline"] + $result["usersonline"];
 
-$db->execute("select count(*) as c from GridUser WHERE `Login`>`Logout` and UserID not like '%;http'");
+$db->execute("select count(*) as c from GridUser WHERE `Login`>`Logout` and UserID like '%;http%'");
 $r = $db->as_obj();
 $result["grid"] = (int) $r->c;
 

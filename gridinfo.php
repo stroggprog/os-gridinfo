@@ -2,7 +2,7 @@
 header("Content-type:application/json");
 //header("Content-type:text/plain");
 
-define("SRC_VERSION", "1.0.2");
+define("SRC_VERSION", "1.0.3");
 
 include_once("lib/db_mysql.php");
 include_once("lib/params.php");
@@ -41,7 +41,7 @@ $sql = "select p.UserID, u.PrincipalID, u.UserLevel from Presence as p, UserAcco
 $db->query( $sql );
 $result["godsonline"] = $db->num_rows();
 
-$db->execute("select count(*) as c from UserAccounts where active=1 and not (Firstname='GRID' or LastName='GOD' or UserLevel>199);");
+$db->execute("select count(*) as c from UserAccounts where UserLevel>-1 and not (Firstname='GRID' or LastName='GOD' or UserLevel>199);");
 $r = $db->as_obj();
 $result["users"] = (int) $r->c;
 

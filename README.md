@@ -96,14 +96,23 @@ Note the data will still be processed in order to correctly update the `landarea
             "coordx": 1000,
             "coordy": 1000,
             "size": 4,
-            "public": true
+            "public": true,
+            "users": {
+                "grid": 0,
+                "local": 0
+            }
+
         },
         {
             "name": "Shop",
             "coordx": 1009,
             "coordy": 1000,
             "size": 1,
-            "public": true
+            "public": true,
+            "users": {
+                "grid": 1,
+                "local": 3
+            }
         }
     ]
 }

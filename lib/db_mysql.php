@@ -147,7 +147,15 @@ class DB_Sql {
     }
     return $this->Query_ID;
   }
-  
+
+  function execute_as_obj( $query_String ){
+      $this->query( $query_String );
+      if( is_object( $this->Query_ID ) ){
+        return $this->next_rec_as_obj();
+      }
+      return $this->Query_ID;
+  }
+
   function insert_id()
   {
     return mysqli_insert_id($this->Link_ID);

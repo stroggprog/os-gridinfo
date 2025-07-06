@@ -21,13 +21,13 @@ if( $p->pw != SECRET ){
 }
 
 $db = new DB_Sql();
+$db = setDBParameters( $db );
 
-$db->Host = "localhost";
-$db->Database = "opensim";
-$db->User = "opensimuser";
-$db->Password = "0hmymossgrid";
+$db2 = new DB_Sql();
+$db2 = setDBParameters( $db2 );
 
-$db->connect( $Host, $Database, $User, $Pass );
+$db->connect();
+$db2->connect();
 
 $db->execute("select count(*) as c from regions");
 $r = $db->as_obj();
@@ -74,6 +74,14 @@ while( $r = $db->next_rec_as_obj() ){
     //$xreg["public"] = $r->musicURL != "";
     $pub = $r->flags & $publicAccess;
     $xreg["public"] =  $pub == 0;
+    $xreg["users"] = array();
+
+    $u = $db2->execute_as_obj("select count(*) as c from GridUser WHERE `Login`>`Logout` and UserID like '%;http%'");
+    $xreg["users"]["grid"] = $u->c;
+
+    $u = $db2->execute_as_obj("select count(*) as c from GridUser WHERE `Login`>`Logout` and UserID not like '%;http%'");
+    $xreg["users"]["local"] = $u->c;
+    
     if( $p->regionlist != "no" ){
         $result["regionlist"][] = $xreg;
     }

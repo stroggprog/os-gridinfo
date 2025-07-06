@@ -2,7 +2,7 @@
 header("Content-type:application/json");
 //header("Content-type:text/plain");
 
-define("SRC_VERSION", "1.0.4");
+define("SRC_VERSION", "1.0.5");
 
 include_once("lib/db_mysql.php");
 include_once("lib/params.php");

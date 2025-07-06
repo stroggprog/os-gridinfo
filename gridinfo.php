@@ -76,11 +76,13 @@ while( $r = $db->next_rec_as_obj() ){
     $xreg["public"] =  $pub == 0;
     $xreg["users"] = array();
 
-    $u = $db2->execute_as_obj("select count(*) as c from GridUser WHERE `Login`>`Logout` and UserID like '%;http%'");
-    $xreg["users"]["grid"] = $u->c;
+    $sql = "select p.UserID, p.RegionID, g.UserID from Presence as p, GridUser as g where p.RegionID='$r->uuid' and p.UserID=g.UserID and g.UserID like '%;http%'";
+    $db2->query($sql);
+    $xreg["users"]["grid"] = $db2->num_rows();
 
-    $u = $db2->execute_as_obj("select count(*) as c from GridUser WHERE `Login`>`Logout` and UserID not like '%;http%'");
-    $xreg["users"]["local"] = $u->c;
+    $sql = "select p.UserID, p.RegionID, g.UserID from Presence as p, GridUser as g where p.RegionID='$r->uuid' and p.UserID=g.UserID and g.UserID not like '%;http%'";
+    $db2->query($sql);
+    $xreg["users"]["local"] = $db2->num_rows();
     
     if( $p->regionlist != "no" ){
         $result["regionlist"][] = $xreg;

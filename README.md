@@ -34,6 +34,9 @@ This script, when invoked, will return a JSON object with the following informat
   - y-coordinate
   - size (expressed in multiples of 256)
   - public status (i.e. no access restrictions)
+  - users
+    - number of local users
+    - number of grid users
 
 The `size` is expressed in the number of grid-coordinates in the x-direction. Each grid coordinate equates to a 256m x 256m square, e.g.
 - 1 = '1 x 1' or '256m x 256m' or 65,536m²

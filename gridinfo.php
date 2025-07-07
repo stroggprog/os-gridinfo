@@ -2,23 +2,29 @@
 header("Content-type:application/json");
 //header("Content-type:text/plain");
 
-define("SRC_VERSION", "1.0.5");
+define("SRC_VERSION", "1.0.6");
 
 include_once("lib/db_mysql.php");
 include_once("lib/params.php");
 include_once("lib/db_params.php");
 include_once("land-flags.php");
 
-$p = new parameters();
-$result = array();
+function cmp( $a, $b ){
+    if( $a["public"] == $b["public"] ) return 0;
+    return $a["public"] > $b["public"] ? -1 : 1;
+}
 
-$result["error"] = "OK";
+$p = new parameters();
+$result = array( "error" => "OK",
+                 "version" => SRC_VERSION,
+                 "date-time" => date("Y-m-d H:i:s") ); // set defaults
 
 if( $p->pw != SECRET ){
     $result["error"] = "naughty access";
     echo json_encode( $result, JSON_PRETTY_PRINT );
     exit(0);
 }
+
 
 $db = new DB_Sql();
 $db = setDBParameters( $db );
@@ -60,8 +66,7 @@ $result["gstatus"] = $result["regions"] > 0;
 $result["landarea"] = 0;
 
 $result["regionlist"] = array();
-$sql = "select r.uuid, r.regionName, r.locX, r.locY, r.sizeX, l.regionUUID, l.musicURL, l.LandFlags as flags from regions as r, land as l where l.regionUUID=r.uuid group by r.uuid order by musicURL desc, regionName;";
-//$db->query("select r.regionName, r.locX, r.locY, l.musicURL from regions as r left join land as l on r.uuid=l.regionUUID order by musicURL desc, regionName;");
+$sql = "select r.uuid, r.regionName, r.locX, r.locY, r.sizeX, l.regionUUID, l.LandFlags as flags from regions as r, land as l where r.uuid=l.regionUUID group by r.uuid order by regionName;";
 $publicAccess = UseAccessGroup | UseAccessList | UsePassList;
 $db->query($sql);
 while( $r = $db->next_rec_as_obj() ){
@@ -88,6 +93,11 @@ while( $r = $db->next_rec_as_obj() ){
         $result["regionlist"][] = $xreg;
     }
 }
+
+// put public regions at the top of the list
+// they're already sorted by region name, so region name will act as a sub-sort
+usort( $result["regionlist"], "cmp" );
+
 
 $jr = json_encode( $result, JSON_PRETTY_PRINT );
 echo $jr;

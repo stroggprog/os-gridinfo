@@ -2,7 +2,7 @@
 header("Content-type:application/json");
 //header("Content-type:text/plain");
 
-define("SRC_VERSION", "1.0.6");
+define("SRC_VERSION", "1.0.7");
 
 include_once("lib/db_mysql.php");
 include_once("lib/params.php");
@@ -64,6 +64,8 @@ $result["grid"] = (int) $r->c;
 $result["gstatus"] = $result["regions"] > 0;
 
 $result["landarea"] = 0;
+$result["landareakm"] = 0;
+
 
 $result["regionlist"] = array();
 $sql = "select r.uuid, r.regionName, r.locX, r.locY, r.sizeX, l.regionUUID, l.LandFlags as flags from regions as r, land as l where r.uuid=l.regionUUID group by r.uuid order by regionName;";
@@ -75,7 +77,7 @@ while( $r = $db->next_rec_as_obj() ){
     $xreg["coordx"] = $r->locX / 256;
     $xreg["coordy"] = $r->locY / 256;
     $xreg["size"]   = $r->sizeX / 256;
-    $result["landarea"] += ($r->sizeX * $r->sizeX);
+    $result["landarea"] += $r->sizeX;
     //$xreg["public"] = $r->musicURL != "";
     $pub = $r->flags & $publicAccess;
     $xreg["public"] =  $pub == 0;
@@ -94,6 +96,8 @@ while( $r = $db->next_rec_as_obj() ){
     }
 }
 
+$result["landareakm"] = $result["landarea"] / 1000;
+$result["landarea"] = $result["landarea"] * $result["landarea"];
 // put public regions at the top of the list
 // they're already sorted by region name, so region name will act as a sub-sort
 usort( $result["regionlist"], "cmp" );
